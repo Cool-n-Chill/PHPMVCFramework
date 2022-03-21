@@ -1,5 +1,4 @@
-
-
+<div class="add-quantity-remove">
     <button class="remove-from-cart-link"
             data-id="<?php echo $product->id; ?>"
             href="cart/add?id=<?php echo $product->id; ?>">

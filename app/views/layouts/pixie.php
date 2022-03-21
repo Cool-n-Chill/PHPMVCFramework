@@ -61,7 +61,7 @@
                         <a class="nav-link <?php if ($this->controller === 'Contact') echo 'active'; ?>" href="contact.html">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if ($this->controller === 'Cart') echo 'active'; ?>" href="cart.html">
+                        <a class="nav-link <?php if ($this->controller === 'Cart') echo 'active'; ?>" href="<?=PATH?>/cart/view">
                             Shopping cart <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         </a>
                     </li>

@@ -17,6 +17,21 @@ jQuery( document ).ready(function( $ ) {
         sendAjax(id, quantity, $(this));
     });
 
+    $('body').on('click', '.clear-cart-button', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/cart/clear',
+            type: 'GET',
+            success: function (res) {
+                $('.cart').remove();
+                $('.cart-heading').append(res);
+            },
+            error: function (e) {
+                alert("Error! Can't clear a cart.");
+            },
+        });
+    });
+
     function sendAjax(id, quantity, object) {
         $.ajax({
             url: '/cart/add',
@@ -26,6 +41,7 @@ jQuery( document ).ready(function( $ ) {
             success: function (res) {
                 setNewValue($(this), res);
                 addAreaHandler($(this), res);
+                refreshTotalCart();
             },
             error: function (e) {
                 alert('Error! Try again later.');
@@ -51,6 +67,9 @@ jQuery( document ).ready(function( $ ) {
         }
         if (quantity > 0 && $(button).parent().hasClass('add-to-cart-button')) {
             changeButtonToCounter(button);
+        }
+        if (quantity == 0 && $(button).parent().parent().hasClass('product-desc')) {
+            removeProductFromCart(button);
         }
     }
 
@@ -82,6 +101,29 @@ jQuery( document ).ready(function( $ ) {
                 alert("Error! Can't change button.");
             },
         });
+    }
+
+    function removeProductFromCart(button) {
+        $(button).parent().parent().parent().remove();
+    }
+
+    function refreshTotalCart() {
+        $.ajax({
+            url: '/cart/refresh',
+            type: 'GET',
+            success: function (res) {
+                totalCartReplace(res);
+            },
+            error: function (e) {
+                alert("Error! Can't change cart.");
+            },
+        });
+    }
+
+    function totalCartReplace(json) {
+        var totalCartInfo = JSON.parse(json);
+        $('.quantity-in-total-cart').text(totalCartInfo['totalQuantity'] + ' products in your cart');
+        $('.total-sum').text('Total sum is ' +  totalCartInfo['totalAmount'] + '$');
     }
 
 });

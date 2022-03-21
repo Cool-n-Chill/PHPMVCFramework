@@ -16,8 +16,7 @@ class ProductController extends AppController
         $this->setProduct();
         $this->checkIfProductInDB($this->product);
         $this->setMeta($this->product->title, $this->product->description, $this->product->keywords);
-        $this->setVariables();
-        $this->setData(compact('product', 'categorys', 'related_products','breadcrumbs', 'gallery'));
+        $this->setData($this->setVariables());
     }
 
     private function setAlias()
@@ -44,6 +43,7 @@ class ProductController extends AppController
         $related_products = $this->getRelatedProducts();
         $breadcrumbs = Breadcrumbs::getBreadcrumbs($product->category_id, $product->title);
         $gallery = $this->getProductImages();
+        return compact('product', 'categorys', 'related_products','breadcrumbs', 'gallery');
     }
 
     private function getCategoryNames()

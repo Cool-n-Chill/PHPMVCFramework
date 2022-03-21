@@ -12,6 +12,12 @@ class CartController extends AppController
     private $quantity;
     private $product;
 
+    public function viewAction()
+    {
+        self::setMeta('Shopping Cart');
+        self::setData($this->setVariablesForView());
+    }
+
     public function addAction()
     {
         $this->setVariables();
@@ -33,11 +39,31 @@ class CartController extends AppController
         die;
     }
 
+    public function clearAction()
+    {
+        $_SESSION['cart'] = array();
+        $_SESSION['totalCart'] = array();
+        echo '<p>Your shopping cart is empty</p>';
+        die;
+    }
+
+    public function refreshAction()
+    {
+        echo json_encode($_SESSION['totalCart']);
+        die;
+    }
+
     private function setVariables()
     {
         $this->id = $this->setValueOfVariable('id');
         $this->quantity = $this->setValueOfVariable('quantity');
         $this->product = $this->findProductInDB($this->id);
+    }
+
+    private function setVariablesForView()
+    {
+        $products = $_SESSION['cart'];
+        return compact('products');
     }
 
 

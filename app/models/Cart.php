@@ -12,6 +12,7 @@ class Cart extends AppModel
     private static $quantity;
     private static $price;
     private static $img;
+    private static $alias;
 
     public static function addToCart($product, $quantity)
     {
@@ -26,6 +27,7 @@ class Cart extends AppModel
         self::$quantity = $quantity;
         self::$price = $product->price;
         self::$img = $product->img;
+        self::$alias = $product->alias;
     }
 
     private static function addProductInfoToSession($product, $quantity)
@@ -42,6 +44,7 @@ class Cart extends AppModel
     {
         $_SESSION['cart'][$product->id]['quantity'] += $quantity;
         self::ifProductQuantityZero($product);
+        self::addInfoToTotalCart($product->price, $quantity);
     }
 
     private static function ifProductQuantityZero($product)
@@ -49,6 +52,12 @@ class Cart extends AppModel
         if ($_SESSION['cart'][$product->id]['quantity'] == 0) {
             unset($_SESSION['cart'][$product->id]);
         }
+    }
+
+    private static function addInfoToTotalCart($price, $quantity)
+    {
+        $_SESSION['totalCart']['totalQuantity'] += $quantity;
+        $_SESSION['totalCart']['totalAmount'] += $quantity * $price;
     }
 
     private static function ifCartDoesntConsistProduct ($product)
@@ -59,8 +68,10 @@ class Cart extends AppModel
                 'quantity'   => self::$quantity,
                 'price'      => self::$price,
                 'img'        => self::$img,
+                'alias'      => self::$alias,
             ];
         }
+        self::addInfoToTotalCart(self::$price, self::$quantity);
     }
 
     private static function giveProductQuantity($product)
