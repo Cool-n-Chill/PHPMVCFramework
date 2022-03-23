@@ -56,6 +56,10 @@ class Cart extends AppModel
 
     private static function addInfoToTotalCart($price, $quantity)
     {
+        if (!isset($_SESSION['totalCart']['totalQuantity']) && !isset($_SESSION['totalCart']['totalAmount'])) {
+            $_SESSION['totalCart']['totalQuantity'] = 0;
+            $_SESSION['totalCart']['totalAmount'] = 0;
+        }
         $_SESSION['totalCart']['totalQuantity'] += $quantity;
         $_SESSION['totalCart']['totalAmount'] += $quantity * $price;
     }

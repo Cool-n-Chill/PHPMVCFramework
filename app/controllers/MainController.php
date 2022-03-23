@@ -10,10 +10,8 @@ class MainController extends AppController
 
     public function indexAction()
     {
-        $featuredProducts = $this->setFProducts();
-        $productsInCart = $this->getSessionCart();
         self::setMeta('Main page');
-        self::setData(compact('featuredProducts', 'productsInCart'));
+        self::setData($this->setVariables());
     }
 
     private function setFProducts()
@@ -21,9 +19,11 @@ class MainController extends AppController
         return \R::find('product', "hit = '1' AND quantity > '0'");
     }
 
-    private function getSessionCart()
+    private function setVariables()
     {
-        return $_SESSION['cart'];
+        $featuredProducts = $this->setFProducts();
+        $productsInCart = $this->getSessionCart();
+        return compact('featuredProducts', 'productsInCart');
     }
 
 }

@@ -52,7 +52,7 @@
                                             href="cart/add?id=<?php echo $product->id; ?>">
                                         <i class="fa fa-minus" aria-hidden="true"></i>
                                     </button>
-                                    <span class="quantity-text">
+                                    <span class="quantity">
                                         <?php echo $productsInCart[$product->id]['quantity']; ?> pcs
                                     </span>
                                     <button class="add-to-cart-link"

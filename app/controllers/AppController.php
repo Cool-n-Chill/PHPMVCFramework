@@ -14,4 +14,9 @@ class AppController extends \pixie\base\Controller
         new AppModel();
     }
 
+    protected function getSessionCart()
+    {
+        return $_SESSION['cart'];
+    }
+
 }

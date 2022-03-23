@@ -6,7 +6,7 @@ jQuery( document ).ready(function( $ ) {
     $('body').on('click', '.add-to-cart-link', function (e) {
         e.preventDefault();
         var id = $(this).data('id'),
-            quantity = 1;
+            quantity = $('input.quantity-text').val() ? $('input.quantity-text').val() : 1;
         sendAjax(id, quantity, $(this));
     });
 
@@ -39,6 +39,7 @@ jQuery( document ).ready(function( $ ) {
             type: 'GET',
             context: object,
             success: function (res) {
+                console.log(res);
                 setNewValue($(this), res);
                 addAreaHandler($(this), res);
                 refreshTotalCart();
@@ -54,7 +55,7 @@ jQuery( document ).ready(function( $ ) {
     }
 
     function findValueField(button) {
-        return $(button).siblings('.quantity-text');
+        return $(button).siblings('.quantity');
     }
 
     function getNewQuantity(quantity) {
@@ -70,6 +71,9 @@ jQuery( document ).ready(function( $ ) {
         }
         if (quantity == 0 && $(button).parent().parent().hasClass('product-desc')) {
             removeProductFromCart(button);
+        }
+        if (quantity > 0 && $(button).parent().hasClass('quantity-form')) {
+            changeButtonToCounter(button);
         }
     }
 

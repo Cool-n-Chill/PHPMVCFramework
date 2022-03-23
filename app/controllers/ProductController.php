@@ -43,7 +43,8 @@ class ProductController extends AppController
         $related_products = $this->getRelatedProducts();
         $breadcrumbs = Breadcrumbs::getBreadcrumbs($product->category_id, $product->title);
         $gallery = $this->getProductImages();
-        return compact('product', 'categorys', 'related_products','breadcrumbs', 'gallery');
+        $productsInCart = $this->getSessionCart();
+        return compact('product', 'categorys', 'related_products','breadcrumbs', 'gallery', 'productsInCart');
     }
 
     private function getCategoryNames()

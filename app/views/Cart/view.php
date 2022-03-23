@@ -34,9 +34,9 @@
                                                 href="cart/add?id=<?=$id;?>">
                                             <i class="fa fa-minus" aria-hidden="true"></i>
                                         </button>
-                                        <span class="quantity-text">
-                                        <?php echo $product['quantity']; ?> pcs
-                                    </span>
+                                        <span class="quantity">
+                                            <?php echo $product['quantity']; ?> pcs
+                                        </span>
                                         <button class="add-to-cart-link"
                                                 data-id="<?=$id;?>"
                                                 href="cart/add?id=<?=$id;?>">

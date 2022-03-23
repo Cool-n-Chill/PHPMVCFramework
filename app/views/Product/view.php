@@ -48,14 +48,34 @@
           <?php endif; ?>
           <p><?php echo($product->content); ?></p>
           <span><?php echo($product->quantity); ?> left on stock</span>
-          <form action="" method="get">
-            <label for="quantity">Quantity:</label>
-            <input name="quantity" type="quantity" class="quantity-text" id="quantity"
-                onfocus="if(this.value == '1') { this.value = ''; }"
-                onBlur="if(this.value == '') { this.value = '1';}"
-                value="1">
-            <input type="submit" class="button add-to-cart-link" value="Order Now!">
-          </form>
+
+            <?php if (array_key_exists($product->id, $productsInCart)): ?>
+                <div class="add-quantity-remove">
+                    <button class="remove-from-cart-link"
+                            data-id="<?php echo $product->id; ?>"
+                            href="cart/add?id=<?php echo $product->id; ?>">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                    <span class="quantity">
+                        <?php echo $productsInCart[$product->id]['quantity']; ?> pcs
+                    </span>
+                    <button class="add-to-cart-link"
+                            data-id="<?php echo $product->id; ?>"
+                            href="cart/add?id=<?php echo $product->id; ?>">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            <?php else: ?>
+                <form action="" method="get" class="quantity-form">
+                    <label for="quantity">Quantity:</label>
+                    <input name="quantity" type="quantity" class="quantity-text" id="quantity"
+                           onfocus="if(this.value == '1') { this.value = ''; }"
+                           onBlur="if(this.value == '') { this.value = '1';}"
+                           value="1">
+                    <input type="submit" data-id="<?=$product->id;?>" class="button add-to-cart-link" value="Order Now!">
+                </form>
+            <?php endif; ?>
+
           <div class="down-content">
             <div class="categories">
               <h6>Category:
