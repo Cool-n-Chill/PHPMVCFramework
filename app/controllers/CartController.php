@@ -11,6 +11,7 @@ class CartController extends AppController
     private $id;
     private $quantity;
     private $product;
+    private $url;
 
     public function viewAction()
     {
@@ -22,20 +23,7 @@ class CartController extends AppController
     {
         $this->setVariables();
         Cart::addToCart($this->product, $this->quantity);
-        die;
-    }
-
-    public function counterAction()
-    {
-        $this->setVariables();
-        $this->createButton();
-        die;
-    }
-
-    public function buttonAction()
-    {
-        $this->setVariables();
-        $this->createCounter();
+        $this->makeResponse($this->product, $this->url);
         die;
     }
 
@@ -47,17 +35,64 @@ class CartController extends AppController
         die;
     }
 
-    public function refreshAction()
-    {
-        echo json_encode($_SESSION['totalCart']);
-        die;
-    }
-
     private function setVariables()
     {
         $this->id = $this->setValueOfVariable('id');
         $this->quantity = $this->setValueOfVariable('quantity');
+        $this->url = $this->setValueOfVariable('url');
         $this->product = $this->findProductInDB($this->id);
+    }
+
+    private function makeResponse($product, $url)
+    {
+        echo json_encode([
+            'quantity'  => $this->makeQuantityResponse($product),
+            'html'      => $this->makeHTMLResponse($this->findControllerInUrl($url), $this->makeQuantityResponse($product)),
+            'totalCart' => $this->makeTotalCartResponse(),
+        ]);
+    }
+
+    private function makeQuantityResponse($product)
+    {
+        return isset($_SESSION['cart'][$product->id]['quantity']) ? $_SESSION['cart'][$product->id]['quantity'] : 0;
+    }
+
+    private function makeHTMLResponse($controller, $quantity)
+    {
+        if ($controller == '' && $quantity == 0){
+            return $this->createHTMLChunk('button');
+        }
+        if ($controller == '' && $quantity == 1){
+            return $this->createHTMLChunk('counter');
+        }
+        if ($controller == 'product' && $quantity == 0){
+             return $this->createHTMLChunk('form');
+        }
+        if ($controller == 'product' && $quantity > 0){
+            return $this->createHTMLChunk('counter');
+        }
+        if ($controller == 'cart' && $quantity == 1){
+            return $this->createHTMLChunk('counter');
+        }
+        return '';
+    }
+
+    private function createHTMLChunk($chunkName)
+    {
+        $product = $this->product;
+        ob_start();
+        require_once APP . "/views/Cart/" . $chunkName . ".php";
+        return ob_get_clean();
+    }
+
+    private function findControllerInUrl($url)
+    {
+        return isset(explode('/', $url)[3]) ? explode('/', $url)[3] : '';
+    }
+
+    private function makeTotalCartResponse()
+    {
+        return $_SESSION['totalCart'];
     }
 
     private function setVariablesForView()
@@ -69,7 +104,7 @@ class CartController extends AppController
 
     private function setValueOfVariable($indexName)
     {
-        return !empty($_GET["$indexName"]) ? (int)$_GET["$indexName"] : null;
+        return !empty($_GET["$indexName"]) ? $_GET["$indexName"] : null;
     }
 
     private function findProductInDB ($id)
@@ -86,15 +121,4 @@ class CartController extends AppController
         }
     }
 
-    private function createCounter()
-    {
-        $product = $this->product;
-        require_once APP . "/views/Cart/counter.php";
-    }
-
-    private function createButton()
-    {
-        $product = $this->product;
-        require_once APP . "/views/Cart/button.php";
-    }
 }

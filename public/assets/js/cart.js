@@ -6,19 +6,45 @@ jQuery( document ).ready(function( $ ) {
     $('body').on('click', '.add-to-cart-link', function (e) {
         e.preventDefault();
         var id = $(this).data('id'),
-            quantity = $('input.quantity-text').val() ? $('input.quantity-text').val() : 1;
-        sendAjax(id, quantity, $(this));
+            quantity = $('input.quantity-text').val() ? $('input.quantity-text').val() : 1,
+            url = String(window.location.href);
+        sendAjaxAdd(id, quantity, url, $(this));
     });
 
     $('body').on('click', '.remove-from-cart-link', function (e) {
         e.preventDefault();
         var id = $(this).data('id'),
-            quantity = -1;
-        sendAjax(id, quantity, $(this));
+            quantity = -1,
+            url = window.location.href;
+        sendAjaxAdd(id, quantity, url, $(this));
     });
+
+    function sendAjaxAdd(id, quantity, url, object) {
+        $.ajax({
+            url: '/cart/add',
+            data: {id: id, quantity: quantity, url: url},
+            type: 'GET',
+            context: object,
+            success: function (res) {
+                res = JSON.parse(res);
+                setNewValue($(this), res.quantity);
+                replaceOrderButtons(object, res.html);
+                totalCartReplace(res.totalCart);
+                ifProductRemoved(object, res.quantity, getControllerFromUrl(url));
+                ifProductWasLastInCart(res.totalCart);
+            },
+            error: function (e) {
+                alert('Error! Try again later.');
+            },
+        });
+    }
 
     $('body').on('click', '.clear-cart-button', function (e) {
         e.preventDefault();
+        sendAjaxClear();
+    });
+
+    function sendAjaxClear() {
         $.ajax({
             url: '/cart/clear',
             type: 'GET',
@@ -28,24 +54,6 @@ jQuery( document ).ready(function( $ ) {
             },
             error: function (e) {
                 alert("Error! Can't clear a cart.");
-            },
-        });
-    });
-
-    function sendAjax(id, quantity, object) {
-        $.ajax({
-            url: '/cart/add',
-            data: {id: id, quantity: quantity},
-            type: 'GET',
-            context: object,
-            success: function (res) {
-                console.log(res);
-                setNewValue($(this), res);
-                addAreaHandler($(this), res);
-                refreshTotalCart();
-            },
-            error: function (e) {
-                alert('Error! Try again later.');
             },
         });
     }
@@ -62,72 +70,35 @@ jQuery( document ).ready(function( $ ) {
         return (quantity + ' pcs');
     }
 
-    function addAreaHandler(button, quantity) {
-        if (quantity == 0 && $(button).parent().hasClass('add-quantity-remove')) {
-            changeCounterToButton(button);
+    function replaceOrderButtons(button, replace) {
+        if (replace != ''){
+            $(button).parent().replaceWith(replace);
         }
-        if (quantity > 0 && $(button).parent().hasClass('add-to-cart-button')) {
-            changeButtonToCounter(button);
-        }
-        if (quantity == 0 && $(button).parent().parent().hasClass('product-desc')) {
+    }
+
+    function totalCartReplace(json) {
+        $('.quantity-in-total-cart').text(json.totalQuantity + ' products in your cart');
+        $('.total-sum').text('Total sum is ' +  json.totalAmount + '$');
+    }
+
+    function ifProductRemoved(button, quantity, controller) {
+        if (quantity == 0 && controller == 'cart') {
             removeProductFromCart(button);
         }
-        if (quantity > 0 && $(button).parent().hasClass('quantity-form')) {
-            changeButtonToCounter(button);
-        }
     }
 
-    function changeCounterToButton(button) {
-        $.ajax({
-            url: '/cart/counter',
-            data: {id: $(button).data('id')},
-            type: 'GET',
-            context: button,
-            success: function (res) {
-                $(button).parent().replaceWith(res);
-            },
-            error: function (e) {
-                alert("Error! Can't change counter.");
-            },
-        });
-    }
-
-    function changeButtonToCounter(button) {
-        $.ajax({
-            url: '/cart/button',
-            data: {id: $(button).data('id')},
-            type: 'GET',
-            context: button,
-            success: function (res) {
-                $(button).parent().replaceWith(res);
-            },
-            error: function (e) {
-                alert("Error! Can't change button.");
-            },
-        });
+    function getControllerFromUrl(url) {
+        return url.split('/')[3];
     }
 
     function removeProductFromCart(button) {
         $(button).parent().parent().parent().remove();
     }
 
-    function refreshTotalCart() {
-        $.ajax({
-            url: '/cart/refresh',
-            type: 'GET',
-            success: function (res) {
-                totalCartReplace(res);
-            },
-            error: function (e) {
-                alert("Error! Can't change cart.");
-            },
-        });
-    }
-
-    function totalCartReplace(json) {
-        var totalCartInfo = JSON.parse(json);
-        $('.quantity-in-total-cart').text(totalCartInfo['totalQuantity'] + ' products in your cart');
-        $('.total-sum').text('Total sum is ' +  totalCartInfo['totalAmount'] + '$');
+    function ifProductWasLastInCart(totalCartObject) {
+        if (totalCartObject.totalQuantity == 0) {
+            sendAjaxClear();
+        }
     }
 
 });

@@ -18,7 +18,6 @@ class Cart extends AppModel
     {
         self::setVariables($product, $quantity);
         self::addProductInfoToSession($product, $quantity);
-        self::giveProductQuantity($product);
     }
 
     private static function setVariables($product, $quantity)
@@ -80,7 +79,7 @@ class Cart extends AppModel
 
     private static function giveProductQuantity($product)
     {
-        echo @$_SESSION['cart'][$product->id]['quantity'] ? $_SESSION['cart'][$product->id]['quantity'] : 0;
+        echo isset($_SESSION['cart'][$product->id]['quantity']) ? $_SESSION['cart'][$product->id]['quantity'] : 0;
     }
 
 }
