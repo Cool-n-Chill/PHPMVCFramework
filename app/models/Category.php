@@ -7,7 +7,7 @@ namespace app\models;
 class Category extends AppModel
 {
 
-    private static $category;
+    public static $category;
     private static $categoryAndChildrenIDs;
 
     public static function getCategoryProducts($alias)
@@ -25,7 +25,6 @@ class Category extends AppModel
 
     private static function getCategory($alias)
     {
-//        return \R::findOne('category', 'alias = ?', [$alias]) ?? throw new \Exception("Category $alias not found", 404);
         if (\R::findOne('category', 'alias = ?', [$alias])) {
             return \R::findOne('category', 'alias = ?', [$alias]);
         } else {

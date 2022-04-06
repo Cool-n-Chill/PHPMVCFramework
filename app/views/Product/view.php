@@ -7,7 +7,7 @@
         <div class="section-heading">
           <div class="breadcrumbs">
               <?php foreach ($breadcrumbs as $breadcrumb): ?>
-                <a href="#"><?php echo $breadcrumb; ?></a> >
+                <a href="<?=PATH . '/category/' . $breadcrumb?>"><?php echo $breadcrumb; ?></a> >
               <?php endforeach; ?>
               <span><?php echo $product->title; ?></span>
           </div>

@@ -4,6 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-sm-12">
+                <div class="breadcrumbs">
+                    <?php foreach ($breadcrumbs as $breadcrumb): ?>
+                        <a href="<?=PATH . '/category/' . $breadcrumb?>"><?php echo $breadcrumb; ?></a> >
+                    <?php endforeach; ?>
+                </div>
                 <div class="section-heading">
                     <div class="line-dec"></div>
                     <h1>Featured Items</h1>

@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\models\Breadcrumbs;
 use app\models\Category;
 
 class CategoryController extends AppController
@@ -26,7 +27,8 @@ class CategoryController extends AppController
     private function setVariables()
     {
         $products = Category::getCategoryProducts($this->alias);
-        return compact('products');
+        $breadcrumbs = Breadcrumbs::getBreadcrumbs(Category::$category->id);
+        return compact('products', 'breadcrumbs');
     }
 
 }

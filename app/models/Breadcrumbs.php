@@ -9,7 +9,7 @@ class Breadcrumbs
     private static $categories;
     private static $categories_chain;
 
-    public static function getBreadcrumbs($category_id, $title)
+    public static function getBreadcrumbs($category_id)
     {
         self::getAllCategories();
         self::getBreadcrumbsParts(self::$categories, $category_id);
