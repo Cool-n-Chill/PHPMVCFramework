@@ -52,7 +52,7 @@
                         <a class="nav-link <?php if ($this->controller === 'Main') echo 'active'; ?>" href="<?=PATH?>">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php if ($this->controller === 'Product') echo 'active'; ?>" href="products.html">Products</a>
+                        <a class="nav-link <?php if ($this->controller === 'Product') echo 'active'; ?>" href="<?=PATH?>/products/view">Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php if ($this->controller === 'About') echo 'active'; ?>" href="about.html">About Us</a>

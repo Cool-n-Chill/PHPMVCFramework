@@ -7,16 +7,16 @@ namespace pixie\base;
 abstract class Controller
 {
 
-    public $route;
-    public $controller;
-    public $view;
-    public $model;
-    public $prefix;
-    public $layout;
-    public $data = [];
-    public $meta = ['title' => '', 'desc' => '', 'keywords' => ''];
+    protected $route;
+    protected $controller;
+    protected $view;
+    protected $model;
+    protected $prefix;
+    protected $layout;
+    protected $data = [];
+    protected $meta = ['title' => '', 'desc' => '', 'keywords' => ''];
 
-    public function __construct($route)
+    protected function __construct($route)
     {
         $this->route = $route;
         $this->controller = $route['controller'];
@@ -31,24 +31,24 @@ abstract class Controller
         $viewObject->render($this->data);
     }
 
-    public function setData($data)
+    protected function setData($data)
     {
         $this->data = $data;
     }
 
-    public function setMeta($title = '', $desc = '', $keywords = '')
+    protected function setMeta($title = '', $desc = '', $keywords = '')
     {
         $this->meta['title'] = $title;
         $this->meta['desc'] = $desc;
         $this->meta['keywords'] = $keywords;
     }
 
-    public function isAjax ()
+    protected function isAjax ()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 
-    public function loadView($view)
+    protected function loadView($view)
     {
         require_once APP . "/views/{$this->prefix}{$this->controller}/{$view}.php";
     }
