@@ -4,8 +4,12 @@
 namespace app\controllers;
 
 
+use app\Traits\TPaginationController;
+
 class ProductsController extends AppController
 {
+
+    use TPaginationController;
 
     public function viewAction()
     {

@@ -7,8 +7,8 @@ namespace pixie;
 class Pagination
 {
     private $currentPage;
-    private $productsPerPage;
     private $totalSumOfProducts;
+    private $productsPerPage;
     private $totalSumOfPages;
     private $uri;
     private $links = [
@@ -22,10 +22,10 @@ class Pagination
         'page1right'    => '',
     ];
 
-    public function __construct($pageNumber, $productsPerPage)
+    public function __construct($currentPage, $totalSumOfProducts)
     {
-        $this->perPage = $perPage;
-        $this->total = $total;
+        $this->currentPage = $currentPage;
+        $this->totalSumOfProducts = $totalSumOfProducts;
         $this->totalSumOfPages;
     }
 }

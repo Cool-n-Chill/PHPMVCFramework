@@ -1,3 +1,4 @@
+<?php var_dump($count); ?>
 <!-- Page Content-->
 <!-- Items Starts Here-->
 <div class="featured-page">

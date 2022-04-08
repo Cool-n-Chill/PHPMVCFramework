@@ -7,23 +7,34 @@ namespace app\models;
 class Category extends AppModel
 {
 
-    public static $category;
-    private static $categoryAndChildrenIDs;
+    public $category;
+    private $categoryAndChildrenIDs;
 
-    public static function getCategoryProducts($alias)
+    public function __construct($alias)
     {
-        self::setCategory($alias);
-        self::setCategoryAndChildrenIDs();
-        $categoryIDs = implode(',', self::$categoryAndChildrenIDs);
-        return \R::find('product', "category_id IN ($categoryIDs)");
+        parent::__construct();
+        $this->setCategory($alias);
+        $this->setCategoryAndChildrenIDs();
     }
 
-    private static function setCategory($alias)
+    public function getCategoryProductsQuantity()
     {
-        self::$category = self::getCategory($alias);
+        $categoryIDs = implode(',', $this->categoryAndChildrenIDs);
+        return \R::count('product', "category_id IN ($categoryIDs)");
     }
 
-    private static function getCategory($alias)
+    public function getCategoryProductsPerPage($start, $perPage)
+    {
+        $categoryIDs = implode(',', $this->categoryAndChildrenIDs);
+        return \R::find('product', "category_id IN ($categoryIDs) LIMIT $start, $perPage");
+    }
+
+    private function setCategory($alias)
+    {
+        $this->category = $this->getCategory($alias);
+    }
+
+    private function getCategory($alias)
     {
         if (\R::findOne('category', 'alias = ?', [$alias])) {
             return \R::findOne('category', 'alias = ?', [$alias]);
@@ -32,32 +43,31 @@ class Category extends AppModel
         }
     }
 
-    private static function setCategoryAndChildrenIDs()
+    private function setCategoryAndChildrenIDs()
     {
-        self::$categoryAndChildrenIDs = self::getCategoryAndChildrenIDs(self::$category->id);
+        $this->categoryAndChildrenIDs = $this->getCategoryAndChildrenIDs($this->category->id);
     }
 
-    private static function getCategoryAndChildrenIDs($categoryID)
+    private function getCategoryAndChildrenIDs($categoryID)
     {
-        $categoryAndChildrenIDs = self::getIDChildrenOfCategory($categoryID);
+        $categoryAndChildrenIDs = $this->getIDChildrenOfCategory($categoryID);
         $categoryAndChildrenIDs[] = $categoryID;
         return $categoryAndChildrenIDs;
     }
 
-    private static function getIDChildrenOfCategory($categoryID)
+    private function getIDChildrenOfCategory($categoryID)
     {
-        $allChildrenCategories = self::getAllChildrenCategories();
-        static $listOfCategoriesIDs;
+        $allChildrenCategories = $this->getAllChildrenCategories();
         foreach ($allChildrenCategories as $category){
             if ($category->parent_id == $categoryID) {
                 $listOfCategoriesIDs[] = $category->id;
-                self::getIDChildrenOfCategory($category->id);
+                $this->getIDChildrenOfCategory($category->id);
             }
         }
         return $listOfCategoriesIDs;
     }
 
-    private static function getAllChildrenCategories()
+    private function getAllChildrenCategories()
     {
         return \R::find('category', "parent_id != '0'");
     }
