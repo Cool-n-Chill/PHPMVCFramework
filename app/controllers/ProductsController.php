@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\Traits\TPaginationController;
+use pixie\Pagination;
 
 class ProductsController extends AppController
 {
@@ -19,13 +20,23 @@ class ProductsController extends AppController
 
     private function setVariables()
     {
-        $products = $this->findAllProducts();
-        return compact('products');
+        $productsQuantity = $this->getQuantityProduct();
+        $pagination = new Pagination($this->getCurrentPageNumber(), $productsQuantity);
+        $products = $this->findProductsPerPage($pagination->getStartAndPerPage());
+        $currentPageNumber = $pagination->getCurrentPageNumber();
+        $paginationView = $this->getPaginationView($pagination->getLinks(), $currentPageNumber);
+        return compact('products', 'paginationView');
     }
 
-    private function findAllProducts()
+    private function findProductsPerPage($startAndPerPage)
     {
-        return \R::find('product', "status = '1'");
+        extract($startAndPerPage);
+        return \R::find('product', "status = '1' LIMIT $start, $perPage");
+    }
+
+    private function getQuantityProduct()
+    {
+        return \R::count('product', "status = '1'");
     }
 
 }

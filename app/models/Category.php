@@ -7,7 +7,7 @@ namespace app\models;
 class Category extends AppModel
 {
 
-    public $category;
+    private $category;
     private $categoryAndChildrenIDs;
 
     public function __construct($alias)
@@ -23,18 +23,24 @@ class Category extends AppModel
         return \R::count('product', "category_id IN ($categoryIDs)");
     }
 
-    public function getCategoryProductsPerPage($start, $perPage)
+    public function getCategoryProductsPerPage($startAndPerPage)
     {
+        extract($startAndPerPage);
         $categoryIDs = implode(',', $this->categoryAndChildrenIDs);
         return \R::find('product', "category_id IN ($categoryIDs) LIMIT $start, $perPage");
     }
 
-    private function setCategory($alias)
+    public function getCategory()
     {
-        $this->category = $this->getCategory($alias);
+        return $this->category;
     }
 
-    private function getCategory($alias)
+    private function setCategory($alias)
+    {
+        $this->category = $this->getCategoryFromDB($alias);
+    }
+
+    private function getCategoryFromDB($alias)
     {
         if (\R::findOne('category', 'alias = ?', [$alias])) {
             return \R::findOne('category', 'alias = ?', [$alias]);
@@ -58,6 +64,7 @@ class Category extends AppModel
     private function getIDChildrenOfCategory($categoryID)
     {
         $allChildrenCategories = $this->getAllChildrenCategories();
+        static $listOfCategoriesIDs;
         foreach ($allChildrenCategories as $category){
             if ($category->parent_id == $categoryID) {
                 $listOfCategoriesIDs[] = $category->id;

@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\models\Breadcrumbs;
 use app\models\Category;
 use app\Traits\TPaginationController;
+use pixie\Pagination;
 
 class CategoryController extends AppController
 {
@@ -23,20 +24,21 @@ class CategoryController extends AppController
         $this->setData($this->setViewVariables());
     }
 
-    private function setVariables()
+    public function setVariables()
     {
         $this->alias = $this->route['alias'];
-        $this->currentPageNumber = $this->getCurrentPageNumber();
-        $this->totalProductInCategory;
     }
 
     private function setViewVariables()
     {
         $category = new Category($this->alias);
-        $products = Category::getCategoryProducts($this->alias);
-        $breadcrumbs = Breadcrumbs::getBreadcrumbs(Category::$category->id);
-        $count = count($products);
-        return compact('products', 'breadcrumbs', 'count');
+        $productsQuantity = $category->getCategoryProductsQuantity();
+        $breadcrumbs = Breadcrumbs::getBreadcrumbs($category->getCategory()->id);
+        $pagination = new Pagination($this->getCurrentPageNumber(), $productsQuantity);
+        $products = $category->getCategoryProductsPerPage($pagination->getStartAndPerPage());
+        $currentPageNumber = $pagination->getCurrentPageNumber();
+        $paginationView = $this->getPaginationView($pagination->getLinks(), $currentPageNumber);
+        return compact('products', 'breadcrumbs', 'paginationView');
     }
 
 }

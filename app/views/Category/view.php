@@ -1,4 +1,3 @@
-<?php var_dump($count); ?>
 <!-- Page Content-->
 <!-- Items Starts Here-->
 <div class="featured-page">
@@ -44,18 +43,5 @@
     </div>
 <?php endif; ?>
 </div>
-<div class="page-navigation">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <ul>
-                    <li class="current-page"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+<?php echo $paginationView; ?>
 <!-- Featred Page Ends Here-->
