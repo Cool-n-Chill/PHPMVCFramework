@@ -46,13 +46,16 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse container menu" id="navbarResponsive">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link <?php if ($this->controller === 'Main') echo 'active'; ?>" href="<?=PATH?>">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php if ($this->controller === 'Product') echo 'active'; ?>" href="<?=PATH?>/products/view">Products</a>
+                        <?php new \app\widgets\menu\Menu([
+                                'tpl' => WWW . '/menu/menu.php',
+                        ]); ?>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php if ($this->controller === 'About') echo 'active'; ?>" href="about.html">About Us</a>
@@ -179,6 +182,7 @@
     <script src="/assets/js/custom.js"></script>
     <script src="/assets/js/owl.js"></script>
     <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/megamenu.js"></script>
 
 
     <script language = "text/Javascript">

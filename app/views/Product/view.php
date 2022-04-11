@@ -5,12 +5,15 @@
     <div class="row">
       <div class="col-md-12">
         <div class="section-heading">
-          <div class="breadcrumbs">
-              <?php foreach ($breadcrumbs as $breadcrumb): ?>
-                <a href="<?=PATH . '/category/' . $breadcrumb?>"><?php echo $breadcrumb; ?></a> >
-              <?php endforeach; ?>
-              <span><?php echo $product->title; ?></span>
-          </div>
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumb">
+                    <?php foreach ($breadcrumbs as $breadcrumb): ?>
+                        <li class="breadcrumb-item">
+                            <a href="<?=PATH . '/category/' . $breadcrumb?>"><?php echo $breadcrumb; ?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            </nav>
           <div class="line-dec"></div>
           <h1>Single Product</h1>
         </div>

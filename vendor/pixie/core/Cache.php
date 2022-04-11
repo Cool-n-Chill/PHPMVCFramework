@@ -6,6 +6,7 @@ namespace pixie;
 
 class Cache
 {
+    use TSingleton;
 
     public static function set($key, $data, $seconds = 3600)
     {
@@ -25,7 +26,7 @@ class Cache
         if (file_exists($file)){
             $content = unserialize(file_get_contents($file));
             if (time() <= $content['end_time']){
-                return $content;
+                return $content['data'];
             } else {
                 unlink($file);
             }
