@@ -8,9 +8,15 @@
             <nav aria-label="breadcrumbs">
                 <ol class="breadcrumb">
                     <?php foreach ($breadcrumbs as $breadcrumb): ?>
-                        <li class="breadcrumb-item">
-                            <a href="<?=PATH . '/category/' . $breadcrumb?>"><?php echo $breadcrumb; ?></a>
-                        </li>
+                        <?php if (end($breadcrumbs) == $breadcrumb): ?>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <?php echo $breadcrumb; ?>
+                            </li>
+                        <?php else: ?>
+                            <li class="breadcrumb-item">
+                                <a href="<?=PATH . '/category/' . $breadcrumb?>"><?php echo $breadcrumb; ?></a>
+                            </li>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </ol>
             </nav>
