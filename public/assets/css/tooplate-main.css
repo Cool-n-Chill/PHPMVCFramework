@@ -857,10 +857,7 @@ a {
 }
 
 
-
-
-
-
+/* Mega Menu Style */
 .menu-mobile {
 	display: none;
 	padding: 20px;
@@ -879,14 +876,13 @@ a {
 	transform: translateY(-25%);
 }
 
-.menu-dropdown-icon:before {
-	content: "\f489";
-	font-family: "Ionicons";
-	display: none;
+.menu-dropdown-icon:after {
+	content: "\f107";
+	font-family: "FontAwesome";
+	display: block;
 	cursor: pointer;
+	padding-left: 5px;
 	float: right;
-	padding: 1.5em 2em;
-	background: #fff;
 	color: #333;
 }
 
@@ -923,7 +919,7 @@ a {
 .menu > ul > li > ul {
 	display: none;
 	width: 100%;
-	background: #f1f1f1;
+	background: #fff;
 	padding: 20px;
 	position: absolute;
 	z-index: 99;
@@ -931,6 +927,8 @@ a {
 	margin: 0;
 	list-style: none;
 	box-sizing: border-box;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 0.25rem;
 }
 
 .menu > ul > li > ul:before,

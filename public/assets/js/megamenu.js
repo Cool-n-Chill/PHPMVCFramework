@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     "use strict";
 
-    $('.menu > ul > li:has( > ul)').addClass('menu-dropdown-icon');
+    $('.menu > ul > li:has(ul)').children('a').addClass('menu-dropdown-icon');
     //Checks if li has sub (ul) and adds class for toggle icon - just an UI
 
     $('.menu > ul > li > ul:not(:has(ul))').addClass('normal-sub');

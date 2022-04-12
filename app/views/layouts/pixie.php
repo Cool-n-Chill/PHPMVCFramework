@@ -68,6 +68,33 @@
                             Shopping cart <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">
+                            Log in
+                        </a>
+                        <ul class="dropdown-menu">
+                            <form class="px-4 py-3">
+                                <div class="form-group">
+                                    <label for="exampleDropdownFormEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleDropdownFormPassword1">Password</label>
+                                    <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                    <label class="form-check-label" for="dropdownCheck">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Log in</button>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">New around here? Sign up</a>
+                            <a class="dropdown-item" href="#">Forgot password?</a>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
