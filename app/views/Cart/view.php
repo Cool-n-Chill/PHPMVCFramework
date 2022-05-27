@@ -59,7 +59,32 @@
                             <p class="total-sum">Total sum is <?php echo $_SESSION['totalCart']['totalAmount']; ?>$</p>
                         </div>
                         <div class="order-button">
-                            <button class="order-products" href="cart/order">Order products</button>
+                            <button <?=!isset($_SESSION['user']) ? 'data-mfp-src="#cart-form"' : 'href="cart/order"';?>
+                                    class="order-products">Order products</button>
+                            <?php if (!isset($_SESSION['user'])): ?>
+                            <div class="cart-form mfp-hide" id="cart-form">
+                                <h5>You must be logged in to order.</h5>
+                                <form class="user-form" action="<?=PATH?>/user/login" method="post" id="login" role="form" data-toggle="validator">
+                                    <div class="form-group has-feedback">
+                                        <label for="inputLogin" class="control-label">Login</label>
+                                        <input name="login" type="text" class="form-control" id="inputLogin" placeholder="Login"
+                                               value="<?= isset($_SESSION['form_data']['login'])? $_SESSION['form_data']['login'] : '' ?>"
+                                               required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <label for="inputPassword" class="control-label">Password</label>
+                                        <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                    <a class="form-link" href="<?=PATH?>/user/signup">New around here? Sign up</a>
+                                    <a class="form-link" href="#">Forgot password?</a>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Log in</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <?php endif; ?>
                         </div>
                         <div class="clear-cart-button">
                             <button class="clear-cart" href="cart/clear">Remove all products</button>

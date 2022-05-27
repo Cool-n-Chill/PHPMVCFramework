@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/assets/css/tooplate-main.css">
     <link rel="stylesheet" href="/assets/css/owl.css">
     <link rel="stylesheet" href="/assets/css/flex-slider.css">
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css">
     <!--
     Tooplate 2114 Pixie
     https://www.tooplate.com/view/2114-pixie
@@ -73,7 +74,7 @@
                             Log in
                         </a>
                         <ul class="dropdown-menu">
-                            <?php if (empty($_SESSION['user_info'])): ?>
+                            <?php if (empty($_SESSION['user'])): ?>
                             <form class="px-4 py-3" method="post" action="/user/login" id="login" role="form" data-toggle="validator">
                                 <div class="form-group has-feedback">
                                     <label for="inputLogin" class="control-label">Login</label>
@@ -102,7 +103,7 @@
                             <a class="dropdown-item" href="<?=PATH?>/user/signup">New around here? Sign up</a>
                             <a class="dropdown-item" href="#">Forgot password?</a>
                             <?php else: ?>
-                            <h5 class="dropdown-header"><?=$_SESSION['user_info']['name']?>, successfully logged in.</h5>
+                            <h5 class="dropdown-header"><?=$_SESSION['user']['name']?>, successfully logged in.</h5>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<?=PATH?>/cart/view">Go to cart</a>
                             <a class="dropdown-item" href="<?=PATH?>/user/logout">Logout</a>
@@ -246,7 +247,7 @@
     <script src="/assets/js/cart.js"></script>
     <script src="/assets/js/megamenu.js"></script>
     <script src="/assets/js/validator.js"></script>
-    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.min.js"></script>
 
 
     <script language = "text/Javascript">

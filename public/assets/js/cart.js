@@ -26,6 +26,9 @@ jQuery( document ).ready(function( $ ) {
             type: 'GET',
             context: object,
             success: function (res) {
+                if (!isJson(res)) {
+                    alert('You must be logged in for adding to cart.');
+                }
                 res = JSON.parse(res);
                 setNewValue($(this), res.quantity);
                 replaceOrderButtons(object, res.html);
@@ -99,6 +102,15 @@ jQuery( document ).ready(function( $ ) {
         if (totalCartObject.totalQuantity == 0) {
             sendAjaxClear();
         }
+    }
+
+    function isJson(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
 
 });

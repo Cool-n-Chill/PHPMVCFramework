@@ -25,7 +25,7 @@ class UserController extends AppController
                     $_SESSION['success'] = 'You successfully signed up';
                     redirect('http://pixie.loc/user/login');
                 } else {
-                    $_SESSION['error'] = 'Error database! Try again later!';
+                    $_SESSION['errors'] = 'Error database! Try again later!';
                     redirect();
                 }
             }
@@ -57,8 +57,15 @@ class UserController extends AppController
 
     public function logoutAction()
     {
-        if ($_SESSION['user_info']) unset($_SESSION['user_info']);
+        if ($_SESSION['user']) unset($_SESSION['user']);
+        CartController::resetCart();
         redirect();
+    }
+
+    public static function isLoggedIn()
+    {
+        if (isset($_SESSION['user'])) return true;
+        return false;
     }
 
 }

@@ -63,7 +63,7 @@ class User extends AppModel
         if (password_verify($password, $user->password)) {
             foreach ($user as $key=>$value) {
                 if ($key != 'password') {
-                    $_SESSION['user_info'][$key] = $value;
+                    $_SESSION['user'][$key] = $value;
                 }
             }
             return true;

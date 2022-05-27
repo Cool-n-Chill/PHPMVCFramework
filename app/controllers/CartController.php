@@ -21,6 +21,7 @@ class CartController extends AppController
 
     public function addAction()
     {
+        $this->checkUserLogged();
         $this->setVariables();
         Cart::addToCart($this->product, $this->quantity);
         $this->makeResponse($this->product, $this->url);
@@ -29,10 +30,15 @@ class CartController extends AppController
 
     public function clearAction()
     {
-        $_SESSION['cart'] = array();
-        $_SESSION['totalCart'] = array();
+        self::resetCart();
         echo '<p>Your shopping cart is empty</p>';
         die;
+    }
+
+    public static function resetCart()
+    {
+        $_SESSION['cart'] = array();
+        $_SESSION['totalCart'] = array();
     }
 
     private function setVariables()
@@ -41,6 +47,14 @@ class CartController extends AppController
         $this->quantity = $this->setValueOfVariable('quantity');
         $this->url = $this->setValueOfVariable('url');
         $this->product = $this->findProductInDB($this->id);
+    }
+
+    private function checkUserLogged()
+    {
+        if (!UserController::isLoggedIn()) {
+            $_SESSION['errors'] = 'You must be logged in for adding to cart.';
+            redirect();
+        }
     }
 
     private function makeResponse($product, $url)
